@@ -1,0 +1,32 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Install Dependencies
+        run: |
+          composer install
+
+      - name: Run PHPUnit Tests
+        run: |
+          php artisan test
+
+      - name: Deploy to Production
+        if: success()
+        run: |
+          # Add deployment steps here
